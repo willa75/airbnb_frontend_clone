@@ -1,11 +1,13 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Navbar from './components/navbar/Navbar';
+import RegisterModal from './components/modals/RegisterModal';
 
 function App() {
   return (
-    <Navbar />
+    <>
+      <RegisterModal />
+      <Navbar />
+    </>
   );
 }
 
