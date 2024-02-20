@@ -1,6 +1,6 @@
 'use client';
 
-import useRegisterModal from "../../hooks/useRegisterModal";
+import useLoginModal from "../../hooks/useLoginModal";
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Modal from "./Modal";
@@ -10,15 +10,13 @@ import toast from "react-hot-toast";
 import Button from "../Button";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
-import {signUp} from 'aws-amplify/auth';
-import useLoginModal from "../../hooks/useLoginModal";
-import useConfirmSignUpModal from "../../hooks/useConfirmSignUpModal";
+import {signIn} from 'aws-amplify/auth';
+import useRegisterModal from "../../hooks/useRegisterModal";
 
 
-const RegisterModal = () => {
-  const registerModal = useRegisterModal();
-  const confirmSignUpModal = useConfirmSignUpModal();
+const LoginModal = () => {
   const loginModal = useLoginModal();
+  const registerModal = useRegisterModal();
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -29,7 +27,6 @@ const RegisterModal = () => {
     }
   } = useForm<FieldValues>({
     defaultValues: {
-      name: '',
       email: '',
       password: ''
     }
@@ -39,23 +36,12 @@ const RegisterModal = () => {
     setIsLoading(true);
 
     try {
-      await signUp({
+      await signIn({
         username: data.email,
-        password: data.password,
-        options: {
-          userAttributes: {
-            email: data.email,
-            name: data.name
-          },
-          autoSignIn: true,
-        }
+        password: data.password
       })
-      .then(data => {
-        if(data.userId !== undefined) {
-          confirmSignUpModal.setUserId(data.userId);
-          registerModal.onClose();
-          confirmSignUpModal.onOpen();
-        } 
+      .then((data) => {
+        console.log(data);
       })
       .finally(() => {
         setIsLoading(false);
@@ -68,18 +54,9 @@ const RegisterModal = () => {
   const bodyContent = (
     <div className="flex flex-col gap-4">
       <Heading 
-        title="Welcome to Airbnb"
-        subtitle="Create an account!"
+        title="Welcome back"
+        subtitle="Login to your account!"
         center
-      />
-
-      <Input 
-        id="name"
-        label="Name"
-        disabled={isLoading}
-        register={register}
-        errors={errors}
-        required
       />
 
       <Input 
@@ -126,18 +103,18 @@ const RegisterModal = () => {
           font-light"
       >
         <div className="flex flex-row items-center gap-2 text-center justify-center">
-          <div>Already have an account?</div>
+          <div>No account yet?</div>
           <div 
             onClick={() => {
-              registerModal.onClose();
-              loginModal.onOpen();
+              loginModal.onClose();
+              registerModal.onOpen();
             }}
             className="
               text-neutral-800
               cursor-pointer 
               hover:underline"
           >
-            Log in
+            Register
           </div>
         </div>
       </div>
@@ -147,10 +124,10 @@ const RegisterModal = () => {
   return (
     <Modal 
       disabled={isLoading}
-      isOpen={registerModal.isOpen}
-      title="Register"
+      isOpen={loginModal.isOpen}
+      title="Login"
       actionLabel="Continue"
-      onClose={registerModal.onClose}
+      onClose={loginModal.onClose}
       onSubmit={handleSubmit(onSubmit)}
       body={bodyContent}
       footer={footerContent}
@@ -158,4 +135,4 @@ const RegisterModal = () => {
   );
 };
 
-export default RegisterModal;
+export default LoginModal;
