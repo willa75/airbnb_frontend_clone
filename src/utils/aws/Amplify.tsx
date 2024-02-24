@@ -8,5 +8,11 @@ Amplify.configure({
       allowGuestAccess: true,
       identityPoolId: process.env.REACT_APP_AWS_COGNITO_GUEST_IDENTITY_POOL_ID,
     }
+  },
+  API: {
+    GraphQL: {
+      endpoint: process.env.REACT_APP_AWS_GRAPHQL_ENDPOINT,
+      defaultAuthMode: 'userPool',
+    }
   }
 });
