@@ -1,5 +1,5 @@
-import { fetchAuthSession, fetchUserAttributes, signIn, signOut } from "aws-amplify/auth";
-import { ReactNode, createContext, useContext, useEffect, useState } from "react";
+import { fetchAuthSession, signIn, signOut } from "aws-amplify/auth";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContextType } from "./types/auth.dto";
 import { Hub } from "aws-amplify/utils";
@@ -32,13 +32,16 @@ const AuthProvider= ({children}: { children: React.ReactNode }) => {
     
     switch (data.payload.event) {
       case 'signedIn':
+        setIsAuthenticated(true);
         const user = await getMyProfile();
         setUser(user);
         break;
       case 'signedOut':
+        setIsAuthenticated(false);
         setUser(null);
         break;
       case 'tokenRefresh_failure':
+        setIsAuthenticated(false);
         setUser(null);
         break;
     }
@@ -49,10 +52,10 @@ const AuthProvider= ({children}: { children: React.ReactNode }) => {
   useEffect(() => {
     getSession().then((session) => {
       if(session && session.userSub) {
+        setIsAuthenticated(true);
         return getMyProfile()
         .then((userProfile: MyProfile) => {
           setUser(userProfile);
-          setIsAuthenticated(true);
         })
         .finally(() => setLoading(false));
       }
