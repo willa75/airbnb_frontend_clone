@@ -6,6 +6,7 @@ import { Hub } from "aws-amplify/utils";
 import { MyProfile } from "../types/profile";
 import { getMyProfile } from "../data/backend";
 import { AuthSession } from '@aws-amplify/core/dist/esm/singleton/Auth/types';
+import toast from "react-hot-toast";
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,
@@ -35,14 +36,17 @@ const AuthProvider= ({children}: { children: React.ReactNode }) => {
         setIsAuthenticated(true);
         const user = await getMyProfile();
         setUser(user);
+        toast.success('Logged in');
         break;
       case 'signedOut':
         setIsAuthenticated(false);
         setUser(null);
+        toast.success('Logged out');
         break;
       case 'tokenRefresh_failure':
         setIsAuthenticated(false);
         setUser(null);
+        toast.error(data.payload.message || 'Authentication error');
         break;
     }
   });

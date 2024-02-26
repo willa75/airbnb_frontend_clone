@@ -40,9 +40,6 @@ const LoginModal = () => {
         username: data.email,
         password: data.password
       })
-      .then((data) => {
-        console.log(data);
-      })
       .finally(() => {
         setIsLoading(false);
       });
