@@ -3,10 +3,10 @@ import {Amplify} from "aws-amplify";
 Amplify.configure({
   Auth: {
     Cognito: {
-      userPoolId: process.env.REACT_APP_AWS_COGNITO_POOL_ID,
-      userPoolClientId: process.env.REACT_APP_AWS_COGNITO_APP_CLIENT_ID,
+      userPoolId: import.meta.env.REACT_APP_AWS_COGNITO_POOL_ID,
+      userPoolClientId: import.meta.env.REACT_APP_AWS_COGNITO_APP_CLIENT_ID,
       allowGuestAccess: true,
-      identityPoolId: process.env.REACT_APP_AWS_COGNITO_GUEST_IDENTITY_POOL_ID,
+      identityPoolId: import.meta.env.REACT_APP_AWS_COGNITO_GUEST_IDENTITY_POOL_ID,
       loginWith: {
         oauth: {
           domain: '',
@@ -21,7 +21,7 @@ Amplify.configure({
   },
   API: {
     GraphQL: {
-      endpoint: process.env.REACT_APP_AWS_GRAPHQL_ENDPOINT,
+      endpoint: import.meta.env.REACT_APP_AWS_GRAPHQL_ENDPOINT,
       defaultAuthMode: 'userPool',
     }
   }
