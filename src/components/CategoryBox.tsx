@@ -1,7 +1,7 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { IconType } from "react-icons";
 import queryString from 'query-string';
-import { createSearchParams, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 interface CategoryBoxProps {
   icon: IconType;
@@ -28,7 +28,6 @@ const CategoryBox: React.FC<CategoryBoxProps> = ({
       ...currentQuery,
       category: label
     };
-    console.log('SEARCH PARAM OUTPUT', {test: searchParams.getAll('category')});
 
     if(searchParams.has('category', label)) {
       delete updatedQuery.category;
@@ -39,29 +38,28 @@ const CategoryBox: React.FC<CategoryBoxProps> = ({
   };
   return (
     <>
-    <pre>{JSON.stringify({searchParams}, null, 2)}</pre>
-    <div
-      onClick={handleClick}
-      className={`
-        flex
-        flex-col
-        items-center
-        justify-center
-        gap-2
-        p-3
-        border-b-2
-        hover:text-neutral-800
-        transition
-        cursor-pointer 
-        ${selected ? 'border-b-neutral-800' : 'border-transparent'}
-        ${selected ? 'text-neutral-800' : 'text-neutral-500'}`
-      }
-    >
-      <Icon size={26} />
-      <div className="font-medium text-sm">
-        {label}
+      <div
+        onClick={handleClick}
+        className={`
+          flex
+          flex-col
+          items-center
+          justify-center
+          gap-2
+          p-3
+          border-b-2
+          hover:text-neutral-800
+          transition
+          cursor-pointer 
+          ${selected ? 'border-b-neutral-800' : 'border-transparent'}
+          ${selected ? 'text-neutral-800' : 'text-neutral-500'}`
+        }
+      >
+        <Icon size={26} />
+        <div className="font-medium text-sm">
+          {label}
+        </div>
       </div>
-    </div>
     </>
   );
 };
