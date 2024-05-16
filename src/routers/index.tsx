@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomePage from "../components/pages/home";
 import RegisterPage from '../components/pages/Register';
+import LoginPage from "../components/pages/Login";
 import AuthProvider from "../context/auth";
 import ConfirmSignUpModal from "../components/modals/ConfirmSignUpModal";
 import LoginModal from "../components/modals/LoginModal";
@@ -19,13 +20,16 @@ const AppRoutes = () => {
         <ConfirmSignUpModal />
         <Navbar />
 
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="register" element={<RegisterPage />} />
-          <Route element={<ProtectedRoutes />}>
-            <Route path="test" element={<HomePage />} />
-          </Route>
-        </Routes>
+        <div className="pb-20 pt-28">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="register" element={<RegisterPage />} />
+            <Route path="login" element={<LoginPage />} />
+            <Route element={<ProtectedRoutes />}>
+              <Route path="test" element={<HomePage />} />
+            </Route>
+          </Routes>
+        </div>
       </AuthProvider>
     </BrowserRouter>
   );

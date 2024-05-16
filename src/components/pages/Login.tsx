@@ -3,35 +3,20 @@ import Heading from "../Heading";
 import Input from "../inputs/Input";
 import { useForm, FieldValues, SubmitHandler } from "react-hook-form";
 import Button from "../Button";
-import { signUp } from "aws-amplify/auth";
-import useConfirmSignUpModal from "../../hooks/useConfirmSignUpModal";
+import { signIn } from "aws-amplify/auth";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 
-const Register: React.FC<{}> = () => {
+const Login: React.FC<{}> = () => {
     const [isLoading, setIsLoading] = useState(false);
-    const confirmSignUpModal = useConfirmSignUpModal();
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
         setIsLoading(true);
     
         try {
-          await signUp({
+          await signIn({
             username: data.email,
             password: data.password,
-            options: {
-              userAttributes: {
-                email: data.email,
-                name: data.name
-              },
-              autoSignIn: true,
-            }
-          })
-          .then(data => {
-            if(data.userId !== undefined) {
-              confirmSignUpModal.setUserId(data.userId);
-              confirmSignUpModal.onOpen();
-            } 
           })
           .finally(() => {
             setIsLoading(false);
@@ -49,14 +34,14 @@ const Register: React.FC<{}> = () => {
         }
     } = useForm<FieldValues>({
         defaultValues: {
-        name: '',
         email: '',
         password: ''
         }
     });
 
-    return ( 
-      <>
+    return (
+        
+        <>
         <div 
           className="
             justify-center
@@ -116,25 +101,16 @@ const Register: React.FC<{}> = () => {
                     border-b-[1px]"
                 >
                   <div className="text-lg font-semibold">
-                    Register
+                    Login
                   </div>
                 </div>
                 {/* BODY */}
                 <div className="relative p-6 flex-auto">
                     <div className="flex flex-col gap-4">
                         <Heading 
-                            title="Welcome to Airbnb"
-                            subtitle="Create an account!"
+                            title="Welcome Back"
+                            subtitle="Login to your account!"
                             center
-                        />
-
-                        <Input 
-                            id="name"
-                            label="Name"
-                            disabled={isLoading}
-                            register={register}
-                            errors={errors}
-                            required
                         />
 
                         <Input 
@@ -163,19 +139,19 @@ const Register: React.FC<{}> = () => {
                     
                     <Button
                       disabled={false}
-                      label={'Register'}
+                      label={'Login'}
                       onClick={handleSubmit(onSubmit)}
                     />
                   </div>
                   <div className="flex flex-row items-center gap-2 text-center justify-center">
-                    <div>Already have an account?</div>
+                    <div>No account yet?</div>
                     <div 
                       className="
                         text-neutral-800
                         cursor-pointer 
                         hover:underline"
                     >
-                      <Link to={"/login"}>Log in</Link>
+                      <Link to={"/register"}>Register</Link>
                     </div>
                   </div>
                 </div>
@@ -187,4 +163,4 @@ const Register: React.FC<{}> = () => {
     );
 };
 
-export default Register;
+export default Login;
