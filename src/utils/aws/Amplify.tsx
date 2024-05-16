@@ -3,17 +3,17 @@ import {Amplify} from "aws-amplify";
 Amplify.configure({
   Auth: {
     Cognito: {
-      userPoolId: import.meta.env.REACT_APP_AWS_COGNITO_POOL_ID,
-      userPoolClientId: import.meta.env.REACT_APP_AWS_COGNITO_APP_CLIENT_ID,
+      userPoolId: import.meta.env.VITE_AWS_COGNITO_POOL_ID,
+      userPoolClientId: import.meta.env.VITE_AWS_COGNITO_APP_CLIENT_ID,
       allowGuestAccess: true,
-      identityPoolId: import.meta.env.REACT_APP_AWS_COGNITO_GUEST_IDENTITY_POOL_ID,
+      identityPoolId: import.meta.env.VITE_AWS_COGNITO_GUEST_IDENTITY_POOL_ID,
       loginWith: {
         oauth: {
           domain: '',
           scopes: ['email', 'openid', 'profile',],
           providers: ['Facebook', 'Google'],
-          redirectSignIn: ['http://localhost:3000/'],
-          redirectSignOut: ['http://localhost:3000/'],
+          redirectSignIn: ['http://127.0.0.1:5173/'],
+          redirectSignOut: ['http://127.0.0.1:5173/'],
           responseType: 'token',
         }
       }
@@ -21,7 +21,7 @@ Amplify.configure({
   },
   API: {
     GraphQL: {
-      endpoint: import.meta.env.REACT_APP_AWS_GRAPHQL_ENDPOINT,
+      endpoint: import.meta.env.VITE_AWS_GRAPHQL_ENDPOINT,
       defaultAuthMode: 'userPool',
     }
   }
